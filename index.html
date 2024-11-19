@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quadrilateral Area Calculator</title>
+  <style>
+    /* Resetting some basic styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fc;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #5d6d7e;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      margin-top: 10px;
+      display: block;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #e3f2fd;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .result h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+      color: #0d47a1;
+    }
+
+    .calculation {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      color: #424242;
+      margin-bottom: 15px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .calculation span {
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    .area-result {
+      font-size: 22px;
+      color: #0d47a1;
+      font-weight: bold;
+    }
+
+    footer {
+      font-size: 14px;
+      margin-top: 20px;
+      color: #777;
+    }
+
+    footer a {
+      color: #0d47a1;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      input, button {
+        font-size: 16px;
+      }
+
+      .result h2 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Quadrilateral Area Calculator</h1>
+    
+    <label for="sideA">Side AB (a):</label>
+    <input type="number" id="sideA" placeholder="Enter length of AB" required>
+    
+    <label for="sideB">Side BC (b):</label>
+    <input type="number" id="sideB" placeholder="Enter length of BC" required>
+    
+    <label for="sideC">Side CD (c):</label>
+    <input type="number" id="sideC" placeholder="Enter length of CD" required>
+    
+    <label for="sideD">Side DA (d):</label>
+    <input type="number" id="sideD" placeholder="Enter length of DA" required>
+    
+    <button onclick="calculateArea()">Calculate Area</button>
+
+    <div id="result" class="result" style="display: none;">
+      <h2>Calculation and Result</h2>
+      <p id="calculation" class="calculation"></p>
+      <p><strong>Area:</strong> <span id="areaResult" class="area-result"></span> square units</p>
+    </div>
+    
+    <footer>
+      <p>Powered by <a href="https://www.bughuntar.com" target="_blank">Professor Software Solutions</a></p>
+    </footer>
+  </div>
+
+  <script>
+    function calculateArea() {
+      // Get the side lengths from input fields
+      const a = parseFloat(document.getElementById('sideA').value);
+      const b = parseFloat(document.getElementById('sideB').value);
+      const c = parseFloat(document.getElementById('sideC').value);
+      const d = parseFloat(document.getElementById('sideD').value);
+
+      // Check if all values are provided
+      if (isNaN(a) || isNaN(b) || isNaN(c) || isNaN(d)) {
+        alert('Please enter valid side lengths for all sides.');
+        return;
+      }
+
+      // Calculate the semi-perimeter
+      const s = (a + b + c + d) / 2;
+
+      // Apply Brahmagupta's formula
+      const area = Math.sqrt((s - a) * (s - b) * (s - c) * (s - d));
+
+      // Format the calculation string
+      const calculation = `
+        Semi-perimeter (s) = ${(a + b + c + d) / 2}
+        <br>Area = √[(s - a)(s - b)(s - c)(s - d)]
+        <br>Area = √[(${s} - ${a})(${s} - ${b})(${s} - ${c})(${s} - ${d})]
+        <br>Area = √[${(s - a)} × ${(s - b)} × ${(s - c)} × ${(s - d)}]
+        <br>Area ≈ <span class="area-result">${area.toFixed(2)}</span> square units
+      `;
+
+      // Display the result and calculation
+      document.getElementById('calculation').innerHTML = calculation;
+      document.getElementById('areaResult').textContent = area.toFixed(2);
+      document.getElementById('result').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
